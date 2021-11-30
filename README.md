@@ -7,6 +7,8 @@ Easily open remote repository links from your local buffer files
 - Add flag to specify if url should open with blame
 - Add function to open url of commit history of a given file
 - Add function top open url of all PR's for a given file
+- Add ability to open url of dependency files e.g. a `node_modules` file (not
+  tracked in git)
 
 ### Disclaimer
 
