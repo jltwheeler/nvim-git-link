@@ -34,7 +34,7 @@ local function get_remote_link()
     local is_git_file = false
     local root_dir = run_shell_command("git rev-parse --show-toplevel", false)
     local file_dir = vim.fn.expand("%:p")
-    local files = run_shell_command("git ls-files --full-name", true)
+    local files = run_shell_command("git ls-files --full-name root_dir " .. root_dir, true)
     local file_name = ""
 
     for file in files do
