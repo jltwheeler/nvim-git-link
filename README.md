@@ -1,6 +1,13 @@
 ## nvim-git-link
 Easily open remote repository links from your local buffer files
 
+### Roadmap
+
+- Add flag to specify if url is saved to clipboard or open in browser
+- Add flag to specify if url should open with blame
+- Add function to open url of commit history of a given file
+- Add function top open url of all PR's for a given file
+
 ### Disclaimer
 
 I'm not a lua developer, so feel free to open a PR to improve / extend 
