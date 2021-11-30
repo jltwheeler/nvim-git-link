@@ -27,6 +27,15 @@ local function run_shell_command(cmd, is_multiline_stdout)
   end
 end
 
+local function is_linux()
+  local op_system = run_shell_command("uname -s", false)
+  if op_system == 'Linux' then
+    return true
+  else
+    return false
+  end
+end
+
 local function get_remote_link()
   local is_git_repo = not string.find(run_shell_command("git status 2>&1", false), 'fatal')
 
@@ -52,7 +61,11 @@ local function get_remote_link()
       local endpoint = split_string(url, ':', 2)
       endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
 
-      run_shell_command("open " .. endpoint, false)
+      if is_linux() then
+        run_shell_command("xdg-open " .. endpoint, false)
+      else
+        run_shell_command("open " .. endpoint, false)
+      end
     else 
       print('This file is not tracked in the remote repo')
     end
