@@ -62,7 +62,7 @@ local function get_remote_link()
       endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
 
       if is_linux() then
-        run_shell_command("xdg-open " .. endpoint, false)
+        run_shell_command("xdg-open " .. endpoint .. ' 1>/dev/null 2>/dev/null', false)
       else
         run_shell_command("open " .. endpoint, false)
       end
