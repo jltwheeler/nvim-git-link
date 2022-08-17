@@ -36,7 +36,17 @@ local function is_linux()
   end
 end
 
-local function get_remote_link()
+local function open_browser(url)
+  if is_linux() then
+    run_shell_command("xdg-open " .. url .. ' 1>/dev/null 2>/dev/null', false)
+  else
+    run_shell_command("open " .. url, false)
+  end
+end
+
+local function get_remote_link(opts)
+  local opts = opts or { open_browser = true }
+
   local is_not_git_repo = string.find(run_shell_command("git status 2>&1", false), 'fatal')
 
   if is_not_git_repo then
@@ -68,10 +78,11 @@ local function get_remote_link()
   local endpoint = split_string(url, ':', 2)
   endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
 
-  if is_linux() then
-    run_shell_command("xdg-open " .. endpoint .. ' 1>/dev/null 2>/dev/null', false)
-  else
-    run_shell_command("open " .. endpoint, false)
+  if opts.open_browser then
+    open_browser(endpoint)
+  end
+  if opts.copy then
+    vim.fn.setreg("+", endpoint)
   end
 end
 
