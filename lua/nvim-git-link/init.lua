@@ -7,7 +7,7 @@ end
 
 local function split_string(str, delimeter, index)
   local pattern = '([^' .. delimeter .. ']+)'
-  result = {}
+  local result = {}
   for word in string.gmatch(str, pattern) do
     table.insert(result, word)
   end
@@ -17,10 +17,10 @@ end
 local function run_shell_command(cmd, is_multiline_stdout)
   local f = assert(io.popen(cmd, 'r'))
 
-  if is_multiline_stdout then 
+  if is_multiline_stdout then
     -- Return multiline stdout as array of strings
     return f:lines()
-  else 
+  else
     local s = assert(f:read('*a'))
     f:close()
     return strip_string_whitespace(s)
@@ -37,9 +37,9 @@ local function is_linux()
 end
 
 local function get_remote_link()
-  local is_git_repo = not string.find(run_shell_command("git status 2>&1", false), 'fatal')
+  local is_not_git_repo = string.find(run_shell_command("git status 2>&1", false), 'fatal')
 
-  if not is_git_repo then
+  if is_not_git_repo then
     print('Oops, this is not a git repo')
     return
   end
