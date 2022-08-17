@@ -39,38 +39,39 @@ end
 local function get_remote_link()
   local is_git_repo = not string.find(run_shell_command("git status 2>&1", false), 'fatal')
 
-  if is_git_repo then
-    local is_git_file = false
-    local root_dir = run_shell_command("git rev-parse --show-toplevel", false)
-    local file_dir = vim.fn.expand("%:p")
-    local files = run_shell_command("git ls-files --full-name root_dir " .. root_dir, true)
-    local file_name = ""
-
-    for file in files do
-      local abs_path = root_dir .. '/' .. file
-      if abs_path == file_dir then
-        is_git_file = true
-        file_name = file
-      end
-    end
-
-    if is_git_file then
-      local line = vim.fn.line('.')
-      local hash = run_shell_command("git rev-parse HEAD", false)
-      local url = run_shell_command("git config --get remote.origin.url", false)
-      local endpoint = split_string(url, ':', 2)
-      endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
-
-      if is_linux() then
-        run_shell_command("xdg-open " .. endpoint .. ' 1>/dev/null 2>/dev/null', false)
-      else
-        run_shell_command("open " .. endpoint, false)
-      end
-    else 
-      print('This file is not tracked in the remote repo')
-    end
-  else
+  if not is_git_repo then
     print('Oops, this is not a git repo')
+    return
+  end
+
+  local is_git_file = false
+  local root_dir = run_shell_command("git rev-parse --show-toplevel", false)
+  local file_dir = vim.fn.expand("%:p")
+  local files = run_shell_command("git ls-files --full-name root_dir " .. root_dir, true)
+  local file_name = ""
+
+  for file in files do
+    local abs_path = root_dir .. '/' .. file
+    if abs_path == file_dir then
+      is_git_file = true
+      file_name = file
+    end
+  end
+  if not is_git_file then
+    print('This file is not tracked in the remote repo')
+    return
+  end
+
+  local line = vim.fn.line('.')
+  local hash = run_shell_command("git rev-parse HEAD", false)
+  local url = run_shell_command("git config --get remote.origin.url", false)
+  local endpoint = split_string(url, ':', 2)
+  endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
+
+  if is_linux() then
+    run_shell_command("xdg-open " .. endpoint .. ' 1>/dev/null 2>/dev/null', false)
+  else
+    run_shell_command("open " .. endpoint, false)
   end
 end
 
