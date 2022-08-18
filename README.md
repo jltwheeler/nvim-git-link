@@ -35,6 +35,18 @@ use 'jltwheeler/nvim-git-link'
 ```
 :lua require"nvim-git-link".get_remote_link()
 ```
+This is equivalent to
+```
+:lua require"nvim-git-link".get_remote_link{ open_browser = true }
+```
+You can also copy the URL to the clipboard, on top of opening the browser, with:
+```
+:lua require"nvim-git-link".get_remote_link{ open_browser = true, copy = true }
+```
+and to avoid opening the browser at all:
+```
+:lua require"nvim-git-link".get_remote_link{ copy = true }
+```
 
 ## Development
 
