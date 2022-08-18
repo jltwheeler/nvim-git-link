@@ -3,7 +3,7 @@ Easily open remote repository links from your local buffer files
 
 ### Roadmap
 
-- Add flag to specify if url is saved to clipboard or open in browser
+- Add support for GitLab and Bitbucket
 - Add flag to specify if url should open with blame
 - Add function to open url of commit history of a given file
 - Add function top open url of all PR's for a given file
