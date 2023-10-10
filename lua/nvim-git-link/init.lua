@@ -76,7 +76,7 @@ local function get_remote_link(opts)
   local hash = run_shell_command("git rev-parse HEAD", false)
   local url = run_shell_command("git config --get remote.origin.url", false)
   local endpoint = split_string(url, ':', 2)
-  endpoint = 'https://github.com/' .. split_string(endpoint, '.', 1) .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
+  endpoint = 'https://github.com/' .. endpoint .. '/blob/' .. hash .. '/' .. file_name .. '#L' .. line
 
   if opts.open_browser then
     open_browser(endpoint)
